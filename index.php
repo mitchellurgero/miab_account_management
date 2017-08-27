@@ -60,7 +60,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 			<nav class="navbar navbar-inverse">
 			  <div class="container-fluid">
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="./">URGERO.ORG Dynamic DNS</a>
+			      <a class="navbar-brand" href="./">Dynamic DNS</a>
 			    </div>
 			    <ul class="nav navbar-nav">
 			    </ul>
