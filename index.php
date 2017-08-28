@@ -28,7 +28,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 			//Password was incorrect
 			$_SESSION['msg'] = "The username or password you entered was incorrect, please try again.";
 		}
-	} elseif($_POST['t'] == "register"){
+	} elseif($config['registration'] == true && $_POST['t'] == "register"){
 		$user = $data->select("accounts", "username", $_POST['username']);
 		if(count($user) < 1){
 			//User not taken, let's create an account.
@@ -48,6 +48,8 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 		} else {
 			$_SESSION['msg'] = "The username you entered is taken. Please try again.";
 		}
+	}elseif($config['registration'] == false && $_POST['t'] == "register"){
+			$_SESSION['msg'] = "Registration is currently disabled. Please contact the Administrator.";
 	}
 	
 }
