@@ -96,7 +96,7 @@ function curl($data = array()){
 			curl_setopt($handle, CURLOPT_USERPWD, "$username:$password");
 			curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 			curl_setopt($handle, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($handle, CURLOPT_TIMEOUT, 10);
 			$ret = curl_exec($handle);
 			curl_close($handle);
 			if(strpos($ret, "does not appear") !== false){

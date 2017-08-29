@@ -126,7 +126,11 @@ class JSONDatabase {
 			
 			$i++;
 		}
-		return $data;
+		if(empty($data)){
+			return array();
+		} else {
+			return $data;
+		}
 	}
 	public function create_table($table){
 		//Duh
