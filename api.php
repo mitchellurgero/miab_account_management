@@ -59,8 +59,8 @@ if(isset($_POST['t'])){
 function curl($data = array()){
 	global $config,$db;
 	//first make sure this shit is safe.
-	foreach($data as $d){
-		$data[$d] = clean($d);
+	foreach($data as $key=>$d){
+		$data[$key] = clean($d);
 	}
 	$url = "https://".$config['miab_server']."/admin/dns/custom/";
 	$ret = "";
@@ -119,7 +119,7 @@ function curl($data = array()){
 			$row = '';
 			if(!empty($rows)){
 				foreach($rows as $r){
-					if($r['name'] == $domain){
+					if(trim($r['name']) == trim($domain)){
 						$row = $r['row_id'];
 						break; //Break out of foreach because we found our domain.
 					}
@@ -133,7 +133,7 @@ function curl($data = array()){
         	curl_setopt($handle, CURLOPT_CUSTOMREQUEST, "DELETE");
 			curl_setopt($handle, CURLOPT_USERPWD, "$username:$password");
 			curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($handle, CURLOPT_TIMEOUT, 10);
 			$ret = curl_exec($handle);
 			curl_close($handle);
 			if(strpos($ret,"updated DNS") !== false){
@@ -151,6 +151,7 @@ function curl($data = array()){
 }
 function clean($string) {
    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+   $string = str_replace(".","",$string);
    $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
    return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
 }
