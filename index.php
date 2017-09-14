@@ -15,7 +15,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 		$user = $data->select("accounts", "username", $_POST['username']);
 		if(count($user) < 1){
 			$_SESSION['msg'] = "The username or password you entered was incorrect, please try again..";
-			header("Location: index.ph;");
+			header("Location: index.php");
 			die();
 		}
 		$user = reset($user);
