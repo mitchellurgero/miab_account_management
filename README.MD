@@ -12,4 +12,4 @@ Make sure to change your password when you login.
 
 ### Disable registration
 
-To disable registration, just put a ```die();``` on line 32 of index.php.
+to disable, just change the appropriate configuration option in config.php.
