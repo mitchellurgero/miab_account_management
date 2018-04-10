@@ -1,7 +1,7 @@
 <?php
 /*
 JSONDatabase class written by Mitchell Urgero <info@urgero.org>
-GitHub: https://github.com/mitchellugero/jsondatabase
+GitHub: https://github.com/mitchellurgero/jsondatabase
 ===============================================================
 This DB class supports the following functions:
 
@@ -11,7 +11,7 @@ select("TABLE_NAME", "WHERE" = null, "EQUALS" = null);//get data from selected r
 create_table("TABLE_NAME");//Create a new table with the given name.
 delete_table("TABLE_NAME");//Delete the given table.
 dump_tables();//Dump all tables AND their data (Mostly for backup purposes.)
-check_table("TABLE_NAME");//Check if a table exists.
+check_table("TABLE_NAME");//Check if a table exists. Returns number of rows if exists
 list_tables();//List all available tables in selected database.
 import("JSON_STRING_OF_DB_BACKUP");//import a database backup and restore into the given database.
 
@@ -70,15 +70,25 @@ class JSONDatabase {
 		}
 		$d = json_decode($data,true);
 		foreach($d as $key=>$value){
+			if($key == "row_id"){ continue;}
 			if(!file_exists($this->db."/tables/$table/$num")){
 				mkdir($this->db."/tables/$table/$num",0777, true);
 			}
 			file_put_contents($this->db."/tables/$table/$num/".$key, $value);
 		}
-		return true;
+		return $num;
 	}
-	public function select($table, $where = null, $equals = null){
+	public function select($table, $where = null, $equals = null, $invert = true){
 		//Get data of row.
+		if(is_int($where) && is_int($equals)){
+			//We are pagenating, need to get all rows between the rows.
+			$range = range($where, $equals);
+			$rangeReturn = array();
+			foreach($range as $r){
+				$rangeReturn[$r] = self::select($table,"row_id",$r)[$r];
+			}
+			return $rangeReturn;
+		}
 		if($where == "row_id"){
 			if(file_exists($this->db."/tables/$table/".$equals)){
 				$dbd = glob($this->db."/tables/$table/".$equals."/*");
@@ -93,7 +103,10 @@ class JSONDatabase {
 			}
 		}
 		$rows = glob($this->db."/tables/$table" . '/*' , GLOB_ONLYDIR);
-		$data;
+		if($invert){
+			$rows = array_reverse($rows);
+		}
+		$data = array();
 		$i = 0;
 		if($equals === null && $where === null){
 			//Return all the rows :D
@@ -111,7 +124,12 @@ class JSONDatabase {
 		}
 		foreach($rows as $row){
 			//Return only rows that contain the search query.
-			$t1 = file_get_contents($this->db."/tables/$table/".basename($row)."/$where");
+			$t1 = "";
+			if(file_exists($this->db."/tables/$table/".basename($row)."/$where")){
+				$t1 = file_get_contents($this->db."/tables/$table/".basename($row)."/$where");
+			} else {
+				continue;
+			}
 			if($t1 == $equals){
 				//We now need to read the row and return it as a PHP object.
 				$dbd = glob($this->db."/tables/$table/".basename($row)."/*");
@@ -119,18 +137,14 @@ class JSONDatabase {
 					$k = basename($key);
 					$data[$i][$k] = file_get_contents($this->db."/tables/$table/".basename($row)."/$k");
 				}
-				$data[$i]['row_id'] = basename($i);
+				$data[$i]['row_id'] = basename($row);
 			} else {
 				//Might add something here for gc, but for now, do nothing and continue.
 			}
 			
 			$i++;
 		}
-		if(empty($data)){
-			return array();
-		} else {
-			return $data;
-		}
+		return $data;
 	}
 	public function create_table($table){
 		//Duh
@@ -193,6 +207,8 @@ class JSONDatabase {
 	public function delete_row($table, $row){
 		//Duh
 		//Doesn't exactly work properly yet.
+		//Since this doesn't work properly YET - disabled for now. use insert to replace row data to blank out the row instead.
+		return false;
 		if (!file_exists($this->db."/tables/$table")) {
 			return false; //Folder not there.
 		} else if($table === null) {
