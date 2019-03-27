@@ -49,11 +49,12 @@ function makeNewUser($u, $p){
 	curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$data = curl_exec($ch);
-	curl_close($ch);
+	
 	if(curl_errno($ch)){
-		error_log($data);
+		curl_close($ch);
 		return false;
 	} else {
+		curl_close($ch);
 		return true;
 	}
 }
@@ -68,7 +69,7 @@ function getAliases(){
 	curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$data = curl_exec($ch);
-	curl_close($ch);
+	
 	if(json_decode($data)){
 		$json = json_decode($data,true);
 		$aliases = $json;
@@ -77,10 +78,12 @@ function getAliases(){
 				return $domain['aliases'];
 			}
 		}
+		curl_close($ch);
 	} else {
+		curl_close($ch);
 		return 0;
 	}
-	
+	curl_close($ch);
 	return 0;
 }
 function addAlias($u, $alias){
