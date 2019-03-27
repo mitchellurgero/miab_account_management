@@ -42,7 +42,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 				?>
 				<div class="col-md-6">
 					<div class="page-header">
-						<h2>Current Aliases</h2>
+						<h2>Current Users</h2>
 					</div>
 					<table class="table table-striped">
 						<thead>
