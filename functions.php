@@ -104,7 +104,6 @@ function addAlias($u, $alias){
 	curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$data = curl_exec($ch);
-	error_log($data);
 	if(curl_errno($ch)){
 		error_log($data);
 		curl_close($ch);
