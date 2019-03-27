@@ -40,7 +40,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 					unset($_SESSION['good']);
 				}
 				?>
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<div class="page-header">
 						<h2>Current Users</h2>
 					</div>
@@ -82,7 +82,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 						</tbody>
 					</table>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<div class="row">
 						<div class="page-header">
 							<h2>Make New User</h2>
