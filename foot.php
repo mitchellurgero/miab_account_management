@@ -5,7 +5,7 @@ echo "";
 	<div class="row">
 		<div class="col-md-12">
 			<div class="divider"></div>
-			<div class="text-center">Dynamic DNS brought to you by URGERO.ORG Copyright &copy; 2017</div>
+			<div class="text-center">Mail-In-A-Box Account Management brought to you by URGERO.ORG<br>Copyright &copy; 2019</div>
 		</div>
 	</div>
 </div>

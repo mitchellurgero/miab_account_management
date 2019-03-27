@@ -1,6 +1,6 @@
-## Dynamic DNS Script for use with Mail-In-A-Box
+## Account Management Script for use with Mail-In-A-Box
 
-This is a flat-file database style, PHP Script that allows your users to create subdomains on your MIAB server.
+This is a flat-file database style, PHP Script that allows a user access to create accounts on your MIAB server.
 
 ### Install instructions
 
@@ -8,8 +8,13 @@ This is a flat-file database style, PHP Script that allows your users to create 
 2. open a browser and run install.php
 3. Then login with ```admin``` and ```password```
 
-Make sure to change your password when you login.
+**Make sure to change your password when you login.**
 
 ### Disable registration
 
-to disable, just change the appropriate configuration option in config.php.
+To disable, just change the appropriate configuration option in config.php.
+
+### Special Notes
+
+- The last user in a domain will not be allowed to be deleted. So if you only see one user in the list, but no delete button, this is NORMAL.
+- Recommend that the db_location directory NOT be publicly accessible, place it where the webserver can edit it, but not were it can serve it.

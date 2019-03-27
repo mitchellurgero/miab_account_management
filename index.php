@@ -62,7 +62,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 			<nav class="navbar navbar-inverse">
 			  <div class="container-fluid">
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="./">Dynamic DNS</a>
+			      <a class="navbar-brand" href="./">Mail-In-A-Box Account Management</a>
 			    </div>
 			    <ul class="nav navbar-nav">
 			    </ul>
@@ -103,10 +103,10 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 										}
 										?>
 										<div class="form-group">
-											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder=" Username" value="">
 										</div>
 										<div class="form-group">
-											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder=" Password">
 										</div>
 										<div class="form-group">
 											<div class="row">
@@ -115,7 +115,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 												</div>
 											</div>
 										</div>
-										<div class="form-group">
+										<!--<div class="form-group">
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="text-center">
@@ -123,18 +123,22 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 													</div>
 												</div>
 											</div>
-										</div>
+										</div>-->
 									</form>
+									<?php
+									if($config['registration']){
+										echo ''
+										?>
 									<form id="register-form" action="index.php" method="POST" role="form" style="display: none;">
 										<input type="hidden" name="t" value="register">
 										<div class="form-group">
-											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="" maxlength="12">
+											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder=" Username" value="" maxlength="12">
 										</div>
 										<div class="form-group">
-											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder=" Password">
 										</div>
 										<div class="form-group">
-											<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+											<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder=" Confirm Password">
 										</div>
 										<div class="form-group">
 											<div class="row">
@@ -144,11 +148,19 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 											</div>
 										</div>
 									</form>
+										<?php
+									} else {
+										?>
+										<div class="text-center">Registration is currently disabled.</div>
+										<?php
+									}
+									?>
+									
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="text-center">Currently serving <?php echo $data->check_table("subdomains")." domains!"; ?></div>
+					
 				</div>
 			</div>
 		</div>

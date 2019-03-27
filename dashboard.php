@@ -5,6 +5,7 @@ if(!isset($_SESSION['username'])){
 }
 include('libs/db/db.php');
 include('config.php');
+include('functions.php');
 $data = new JSONDatabase($config['db'], $config['db_location']);
 ?>
 <html>
@@ -15,7 +16,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 			<nav class="navbar navbar-inverse">
 			  <div class="container-fluid">
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="./">Dynamic DNS</a>
+			      <a class="navbar-brand" href="./">Mail-In-A-Box Account Management</a>
 			    </div>
 			    <ul class="nav navbar-nav">
 			    	<li><a href="#">Welcome, <?php echo $_SESSION['username'];?>!</a></li>
@@ -40,23 +41,30 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 				?>
 				<div class="col-md-6">
 					<div class="page-header">
-						<h2>Current subdomians</h2>
+						<h2>Current Users</h2>
 					</div>
 					<table class="table table-striped">
 						<thead>
-							<tr><th>Name</th><th>IP Address</th><th>Options</th></tr>
+							<tr><th>Name</th><th>Account Type</th><th>Options</th></tr>
 						</thead>
 						<tbody>
 							<?php
-							$domains = $data->select("subdomains", "username", $_SESSION['username']);
-							if(count($domains) < 1){
-								echo "<tr><td><b>You have no domains! Please add one to the right -></b></td></tr>\r\n";
-							} else {
-								foreach($domains as $d){
-									echo "<tr><td>".$d['name']."</td><td>".$d['ip'].'</td><td><form action="api.php" method="POST"><input type="hidden" name="t" value="DELETE"><button class="btn btn-sm btn-danger" name="name" value="'.explode(".",$d['name'])[0].'">Delete</button></form></td></tr>'."\r\n";
-								}
+						$users = getUsers();
+						if(count($users) == 1){
+							$noDel = true;
+						}
+						foreach($users as $user){
+							$uType = "User";
+							$delForm = '<form action="api.php" method="POST">
+								<input type="hidden" name="t" value="archive">
+								<input type="hidden" name="email" value="'.$user['email'].'">
+								<button class="btn btn-danger btn-sm" type="submit">Delete User</button>
+							</form>';
+							if(!empty($user['privileges'])){
+								$uType = "Admin";
 							}
-
+							echo '<tr><td>'.$user['email'].'</td><td>'.$uType.'</td><td>';if(!$noDel){ echo $delForm; }echo '</td></tr>';
+						}
 							?>
 						</tbody>
 					</table>
@@ -64,20 +72,20 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 				<div class="col-md-6">
 					<div class="row">
 						<div class="page-header">
-							<h2>Account Options</h2>
+							<h2>Make New User</h2>
 						</div>
 						<form action="api.php" method="POST">
-							<input type="hidden" name="t" value="PUT">
+							<input type="hidden" name="t" value="new">
 							<div class="input-group">
-	        					<input class="form-control" type="text" name="name" placeholder="name (Max 12. Char.)" maxlength="12"><span class="input-group-addon">@<?php echo $config['dns_domain'];?></span><br>
+	        					<input class="form-control" type="text" name="userName" placeholder="Username (Max 15. Char.)" maxlength="15"><span class="input-group-addon">@<?php echo $config['domain'];?></span><br>
 	        				</div><br>
-	        					<input class="form-control" type="text" name="ip" placeholder="<?php echo $_SERVER['REMOTE_ADDR']; ?>"><br>
-	        					<button class="btn btn-primary pull-right" type="submit" name="submit">Add Domain</button>
+	        					<input class="form-control" type="password" name="userPass" placeholder="Su73rSt40ngP@ssW0rD"><br>
+	        					<button class="btn btn-primary pull-right" type="submit" name="submit">Add Account</button>
 						</form>
 					</div>
 					<div class="row">
 						<div class="page-header">
-							<h3>Change Password</h3>
+							<h3>Change Dashboard Password</h3>
 						</div>
 						<form action="api.php" method="POST">
 							<input type="hidden" name="t" value="password">

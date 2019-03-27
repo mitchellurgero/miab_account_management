@@ -74,7 +74,7 @@ class JSONDatabase {
 			if(!file_exists($this->db."/tables/$table/$num")){
 				mkdir($this->db."/tables/$table/$num",0777, true);
 			}
-			file_put_contents($this->db."/tables/$table/$num/".$key, $value);
+			file_put_contents($this->db."/tables/$table/$num/".$key, $value, LOCK_EX);
 		}
 		return $num;
 	}

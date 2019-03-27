@@ -5,7 +5,7 @@ echo "Loaded DB Class..\r\n";
 include('config.php');
 
 $data = new JSONDatabase($config['db'], $config['db_location']);
-if($data->check_table('accounts') !== true){
+if($data->check_table('accounts') != true){
 	$data->create_table('accounts');
 	$p = password_hash("password", PASSWORD_DEFAULT);
 	$d = array("username"=>"admin", "password"=>"$p");
