@@ -86,7 +86,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 						<input type="hidden" name="t" value="newAlias">
 						<p>Alias Name:</p>
 						<div class="input-group">
-	        				<input class="form-control" type="text" name="address" placeholder="Alias (Max 15. Char.)" maxlength="15"><span class="input-group-addon">@<?php echo $config['domain'];?></span><br>
+	        				<input class="form-control" type="text" name="address" placeholder="Alias (Max 32. Char.)" maxlength="32"><span class="input-group-addon">@<?php echo $config['domain'];?></span><br>
 	        			</div><br>
 	        			<p>Forwards To:</p>
 	        			<textarea class="" rows="4" style="width:100%" name="forwards"></textarea><br><br>

@@ -5,7 +5,7 @@ echo "";
 	<div class="row">
 		<div class="col-md-12">
 			<div class="divider"></div>
-			<div class="text-center">Mail-In-A-Box Account Management brought to you by URGERO.ORG<br>Copyright &copy; 2019</div>
+			<div class="text-center">Mail-In-A-Box Account Management brought to you by URGERO.ORG<br>Copyright &copy; 2019<br>Thanks to <a href="https://discourse.mailinabox.email/u/alento" target="_blank">@alento</a> from MIAB Discourse for the idea!</div>
 		</div>
 	</div>
 </div>
