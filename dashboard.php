@@ -20,6 +20,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 			    </div>
 			    <ul class="nav navbar-nav">
 			    	<li><a href="#">Welcome, <?php echo $_SESSION['username'];?>!</a></li>
+			    	<li><a href="aliases.php"><i class="fa fa-person"></i> Aliases</a></li>
 			    	<li><a href="logout.php"><i class="fa fa-person"></i> Logout</a></li>
 			    </ul>
 			  </div>
@@ -41,7 +42,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 				?>
 				<div class="col-md-6">
 					<div class="page-header">
-						<h2>Current Users</h2>
+						<h2>Current Aliases</h2>
 					</div>
 					<table class="table table-striped">
 						<thead>
@@ -50,11 +51,19 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 						<tbody>
 							<?php
 						$users = getUsers();
+						$aliases = getAliases();
+						$noDel = false;
 						if(count($users) == 1){
 							$noDel = true;
 						}
 						foreach($users as $user){
 							$uType = "User";
+							$userAliases = '';
+							foreach($aliases as $alias){
+								if(in_array($user['email'],$alias['forwards_to'])){
+									$userAliases .= "<li>".$alias['address']."</li>";
+								}
+							}
 							$delForm = '<form action="api.php" method="POST">
 								<input type="hidden" name="t" value="archive">
 								<input type="hidden" name="email" value="'.$user['email'].'">
@@ -63,7 +72,11 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 							if(!empty($user['privileges'])){
 								$uType = "Admin";
 							}
-							echo '<tr><td>'.$user['email'].'</td><td>'.$uType.'</td><td>';if(!$noDel){ echo $delForm; }echo '</td></tr>';
+							echo '<tr><td>'.$user['email'].'<br>
+							<ul>
+							'.$userAliases.'
+							</ul>
+							</td><td>'.$uType.'</td><td>';if(!$noDel){ echo $delForm; }echo '</td></tr>';
 						}
 							?>
 						</tbody>

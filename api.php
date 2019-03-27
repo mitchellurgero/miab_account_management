@@ -48,6 +48,7 @@ if(isset($_POST['t'])){
 				} else {
 					$_SESSION['msg'] = "ERROR! New user creation failed! Please check logs for details.";
 				}
+				header("Location: dashboard.php");
 				break;
 			case "archive":
 				if(isset($_POST['email'])){
@@ -59,12 +60,35 @@ if(isset($_POST['t'])){
 				} else {
 					$_SESSION['msg'] = "ERROR! Unable to archive user, please check logs for details.";
 				}
+				header("Location: dashboard.php");
 				break;
+			case "delalias":
+				if(isset($_POST['address'])){
+					if(delAlias($_POST['address'])){
+						$_SESSION['good'] = "SUCCESS! The alias was deleted!";
+					} else {
+						$_SESSION['msg'] = "ERROR! Unable to delete alias, please check logs for details.";
+					}
+				}
+				header("Location: aliases.php");
+				break;
+			case "newalias":
+				if(isset($_POST['address'], $_POST['forwards'])){
+					if(addAlias($_POST['address'],$_POST['forwards'])){
+						$_SESSION['good'] = "SUCCESS! The alias was added!";
+					} else {
+						$_SESSION['msg'] = "ERROR! Unable to add alias, please check logs for details.";
+					}
+				}
+				header("Location: aliases.php");
+				break;
+			
 			default:
 				$_SESSION['msg'] = "ERROR! API Failure.";
+				header("Location: dashboard.php");
 				break;
 		}
-		header("Location: dashboard.php");
+		
 	}
 	
 } else {
