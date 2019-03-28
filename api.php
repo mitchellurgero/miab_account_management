@@ -50,6 +50,20 @@ if(isset($_POST['t'])){
 				}
 				header("Location: dashboard.php");
 				break;
+			case "restore":
+				if(isset($_POST['userName'])){
+					$nPass = generateRandomString(14);
+					$nUser = explode("@", $_POST['userName']);
+					if(makeNewUser($nUser[0]."@".$config['domain'], $nPass)){
+						$_SESSION['good'] = "SUCCESS! The user account has been restored with the password of <code>$nPass</code>";
+					} else {
+						$_SESSION['msg'] = "ERROR! User restore failed! Please check logs for details.";
+					}
+				} else {
+					$_SESSION['msg'] = "ERROR! User restore failed! Please check logs for details.";
+				}
+				header("Location: dashboard.php");
+				break;
 			case "archive":
 				if(isset($_POST['email'])){
 					if(archiveUser($_POST['email'])){

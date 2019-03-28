@@ -60,18 +60,24 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 							$uType = "User";
 							$userAliases = '';
 							if($user['status'] != "active"){
-								continue;
+								$bForm = '<form action="api.php" method="POST">
+								<input type="hidden" name="t" value="restore">
+								<input type="hidden" name="userName" value="'.$user['email'].'">
+								<button class="btn btn-success btn-sm" type="submit">Restore User</button>
+							</form>';
+							} else {
+								$bForm = '<form action="api.php" method="POST">
+								<input type="hidden" name="t" value="archive">
+								<input type="hidden" name="email" value="'.$user['email'].'">
+								<button class="btn btn-danger btn-sm" type="submit">Delete User</button>
+							</form>';
 							}
 							foreach($aliases as $alias){
 								if(in_array($user['email'],$alias['forwards_to'])){
 									$userAliases .= "<li>".$alias['address']."</li>";
 								}
 							}
-							$delForm = '<form action="api.php" method="POST">
-								<input type="hidden" name="t" value="archive">
-								<input type="hidden" name="email" value="'.$user['email'].'">
-								<button class="btn btn-danger btn-sm" type="submit">Delete User</button>
-							</form>';
+							
 							if(!empty($user['privileges'])){
 								$uType = "Admin";
 							}
@@ -79,7 +85,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 							<ul>
 							'.$userAliases.'
 							</ul>
-							</td><td>'.$uType.'</td><td>';if(!$noDel){ echo $delForm; }echo '</td></tr>';
+							</td><td>'.$uType.'</td><td>';if(!$noDel){ echo $bForm; }echo '</td></tr>';
 						}
 							?>
 						</tbody>
