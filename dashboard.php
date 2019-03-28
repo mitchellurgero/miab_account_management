@@ -59,6 +59,9 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 						foreach($users as $user){
 							$uType = "User";
 							$userAliases = '';
+							if($user['status'] != "active"){
+								continue;
+							}
 							foreach($aliases as $alias){
 								if(in_array($user['email'],$alias['forwards_to'])){
 									$userAliases .= "<li>".$alias['address']."</li>";
