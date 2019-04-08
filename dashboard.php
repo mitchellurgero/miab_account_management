@@ -99,7 +99,7 @@ $data = new JSONDatabase($config['db'], $config['db_location']);
 						<form action="api.php" method="POST">
 							<input type="hidden" name="t" value="new">
 							<div class="input-group">
-	        					<input class="form-control" type="text" name="userName" placeholder="Username (Max 32. Char.)" maxlength="32"><span class="input-group-addon">@<?php echo $config['domain'];?></span><br>
+	        					<input class="form-control" type="text" name="userName" placeholder="Username (Max 32. Char.)" maxlength="32"><span class="input-group-addon">@<?php echo $_SESSION['domain'];?></span><br>
 	        				</div><br>
 	        					<input class="form-control" type="password" name="userPass" placeholder="Su73rSt40ngP@ssW0rD"><br>
 	        					<button class="btn btn-primary pull-right" type="submit" name="submit">Add Account</button>

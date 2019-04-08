@@ -3,8 +3,15 @@ $username = $config['admin'];
 $password = $config['pass'];
 function archiveUser($u){
 	global $config,$username,$password;
+	$u = trim($u);
 	$fields_string = "";
 	$url = "https://".$config['hostname']."/admin/mail/users/remove";
+	$email = explode("@",$u);
+	if(count($email) >= 2){
+		if(trim(end($email)) != trim($_SESSION['domain'])){
+			return false;
+		}
+	}
 	$fields = array(
 		"email"    => urlencode($u)
 		);
@@ -32,6 +39,18 @@ function archiveUser($u){
 function makeNewUser($u, $p){
 	global $config,$username,$password;
 	$fields_string = "";
+	$u = trim($u);
+	$email = explode("@",$u);
+	var_dump($email);
+	if(count($email) >= 2){
+		if(trim(end($email)) != trim($_SESSION['domain'])){
+
+			return false;
+		}
+	} else {
+		return false;
+	}
+	echo $u;
 	$url = "https://".$config['hostname']."/admin/mail/users/add";
 	$fields = array(
 		"email"    => urlencode($u),
@@ -49,7 +68,7 @@ function makeNewUser($u, $p){
 	curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$data = curl_exec($ch);
-	
+	var_dump($data);
 	if(curl_errno($ch)){
 		curl_close($ch);
 		return false;
@@ -69,16 +88,16 @@ function getAliases(){
 	curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 	$data = curl_exec($ch);
-	
 	if(json_decode($data)){
 		$json = json_decode($data,true);
 		$aliases = $json;
 		foreach($aliases as $domain){
-			if($domain['domain'] == $config['domain']){
+			if(trim($domain['domain']) == trim($_SESSION['domain'])){
 				return $domain['aliases'];
 			}
 		}
 		curl_close($ch);
+		return 0;
 	} else {
 		curl_close($ch);
 		return 0;
@@ -88,11 +107,12 @@ function getAliases(){
 }
 function addAlias($u, $alias){
 	global $config,$username,$password;
+	$u = trim($u);
 	$array = preg_split("/\r\n|\n|\r/", $alias);
 	$fields_string = "";
 	$url = "https://".$config['hostname']."/admin/mail/aliases/add";
 	$fields = array(
-		"address"    => urlencode($u."@".$config['domain']),
+		"address"    => urlencode($u."@".$_SESSION['domain']),
 		"forwards_to" => urlencode(implode(",",$array))
 		);
 	foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
@@ -159,7 +179,7 @@ function getUsers(){
 		$json = json_decode($data,true);
 		$domains = $json;
 		foreach($domains as $domain){
-			if($domain['domain'] == $config['domain']){
+			if(trim($domain['domain']) == trim($_SESSION['domain'])){
 				curl_close($ch);
 				return $domain['users'];
 			}

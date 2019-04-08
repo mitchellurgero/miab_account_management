@@ -22,6 +22,7 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 		$pass = $user['password'];
 		if(password_verify($_POST['password'], $pass)){
 			$_SESSION['username'] = $user['username'];
+			$_SESSION['domain'] = $user['domain'];
 			header("Location:dashboard.php");
 			die();
 		} else {
@@ -36,7 +37,8 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 				//Password matches
 				$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 				$username = substr(clean($_POST['username']),0,12);
-				$userData = array("username"=>"$username","password"=>"$password");
+				$domain = clean($_POST['domain']);
+				$userData = array("username"=>"$username","password"=>"$password","domain"=>$domain);
 				if($data->insert("accounts", json_encode($userData))){
 					$_SESSION['good'] = "SUCCESS! You may now login with the username '$username'";
 				} else {
@@ -103,10 +105,10 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 										}
 										?>
 										<div class="form-group">
-											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder=" Username" value="">
+											<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder=" Username" value="" required>
 										</div>
 										<div class="form-group">
-											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder=" Password">
+											<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder=" Password" required>
 										</div>
 										<div class="form-group">
 											<div class="row">
@@ -139,6 +141,9 @@ if(isset($_POST['username']) && isset($_POST['t'])){
 										</div>
 										<div class="form-group">
 											<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder=" Confirm Password">
+										</div>
+										<div class="form-group">
+											<input type="text" name="domain" id="domain" tabindex="3" class="form-control" placeholder=" example.com" required>
 										</div>
 										<div class="form-group">
 											<div class="row">

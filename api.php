@@ -40,7 +40,7 @@ if(isset($_POST['t'])){
 		switch(strtolower($_POST['t'])){
 			case "new":
 				if(isset($_POST['userName'],$_POST['userPass'])){
-					if(makeNewUser($_POST['userName']."@".$config['domain'], $_POST['userPass'])){
+					if(makeNewUser($_POST['userName']."@".$_SESSION['domain'], $_POST['userPass'])){
 						$_SESSION['good'] = "SUCCESS! The New user account has been created!";
 					} else {
 						$_SESSION['msg'] = "ERROR! New user creation failed! Please check logs for details.";
@@ -54,7 +54,7 @@ if(isset($_POST['t'])){
 				if(isset($_POST['userName'])){
 					$nPass = generateRandomString(14);
 					$nUser = explode("@", $_POST['userName']);
-					if(makeNewUser($nUser[0]."@".$config['domain'], $nPass)){
+					if(makeNewUser($nUser[0]."@".$_SESSION['domain'], $nPass)){
 						$_SESSION['good'] = "SUCCESS! The user account has been restored with the password of <code>$nPass</code>";
 					} else {
 						$_SESSION['msg'] = "ERROR! User restore failed! Please check logs for details.";

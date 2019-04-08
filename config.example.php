@@ -5,6 +5,5 @@ $config = array(
 	"hostname"  	=> "box.example.com", //Mail-In-A-Box URI 
 	"admin"			=> "admin@example.com", //Admin account username/email
 	"pass"			=> "P@SSw0Rd123", //Admin account password
-	"domain"    	=> "example.com", //FQDN of the domain users will be using for subdomains.
 	"registration"	=>	false //Enable or disable registration.
 	);
