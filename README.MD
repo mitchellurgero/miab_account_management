@@ -4,6 +4,8 @@ This is a flat-file database style, PHP Script that allows a user access to crea
 
 ### Install instructions
 
+**Please be sure you install `php-curl` module for php before trying to use the script**
+
 1. copy ```config.example.php``` to ```config.php``` and change what you need in there. Make sure to create the directory for the db_location if needed.
 2. open a browser and run install.php
 3. Then login with ```admin``` and ```password```
